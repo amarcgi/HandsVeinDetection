@@ -3,16 +3,12 @@
  * and open the template in the editor.
  */
 package handsveindetection.db;
-
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import handsveindetection.buisness.VeinDetails;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Collection;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,8 +18,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.lob.LobCreator;
 import org.springframework.jdbc.support.lob.LobHandler;
-
-
 /**
  *
  * @author Amar
@@ -53,23 +47,25 @@ public class HandsVeinDaoImpl implements HandsVeinDao{
         if(indexWhiteSpace!=0)
         handsVeinDetails.setUserName(userName.substring(0, indexWhiteSpace));
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String queryInsert= "insert into handsvein(userName,contactNumber,email,address,password)values(?,?,?,?,?)";
+        String queryInsert= "insert into handsvein(userName,contactNumber,email,address,noofvein,noofcrosspoint)values(?,?,?,?,?,?)";
         jdbcTemplate.update(new AbstractLobPreparedStatementCreator(new org.springframework.jdbc.support.lob.DefaultLobHandler(), queryInsert, "pk") {
                                     @Override
                                     protected void setValues(PreparedStatement ps, LobCreator lobCreator) throws SQLException, DataAccessException {
                                         ps.setString(1, handsVeinDetails.getUserName());
                                         ps.setString(2, handsVeinDetails.getContactNumber());  
                                         ps.setString(3, handsVeinDetails.getEmail()); 
-                                        ps.setString(4, handsVeinDetails.getAddress());  
-                                        lobCreator.setBlobAsBytes(ps, 5, handsVeinDetails.getPassword());
+                                        ps.setString(4, handsVeinDetails.getAddress());
+                                        ps.setLong(5, handsVeinDetails.getNoofvein());
+                                        ps.setLong(6, handsVeinDetails.getNoofcrosspoint());  
+                                        // lobCreator.setBlobAsBytes(ps, 5, handsVeinDetails.getPassword());
                                        
                                     }
                                   }, keyHolder);
         final int pk = keyHolder.getKey().intValue();
         String generateUserId= handsVeinDetails.getUserName()+"@"+pk;
-        final String insertUserId ="update handsvein set userGeneratedId=?,registrationDate=Now() where pk=?";
         
-         jdbcTemplate.update(new PreparedStatementCreator() {
+        final String insertUserId ="update handsvein set userGeneratedId=?,registrationDate=Now() where pk=?";
+        jdbcTemplate.update(new PreparedStatementCreator() {
           @Override
             public PreparedStatement createPreparedStatement(Connection cnctn) throws SQLException {
                 PreparedStatement stmt=   cnctn.prepareStatement(insertUserId);            
@@ -102,7 +98,7 @@ public class HandsVeinDaoImpl implements HandsVeinDao{
     }
 
     @Override
-    public boolean checkUserId(final int userId) {
+    public boolean checkUserId(final int userId,final String usergeneratedId) {
        
        String queryDbUserID = "select userGeneratedId from handsvein where pk="+userId;
        final Temp temp = new Temp();
@@ -110,7 +106,7 @@ public class HandsVeinDaoImpl implements HandsVeinDao{
              @Override
             public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
                if(rs.next()){
-                   if(rs.getString("userGeneratedId")!=null){
+                   if(rs.getString("userGeneratedId")!=null && rs.getString("userGeneratedId").equals(usergeneratedId)){
                      
                        return temp.temp=true;
                    }
@@ -123,40 +119,73 @@ public class HandsVeinDaoImpl implements HandsVeinDao{
   }
 
     @Override
-    public boolean checkPassword(final byte[] imageBytes, int userId) {
-        String queryDbPasword = "select password from handsvein where pk="+userId;
-         final Temp temp = new Temp();
-        jdbcTemplate.query(queryDbPasword, new ResultSetExtractor<Boolean>() {
-         @Override
-            public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
-             if(rs.next()){
-                 InputStream is  = rs.getBinaryStream("password");
-             try{
-                   int size=is.available();
-                   if(size>0){
-                          ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    public boolean checkPassword(VeinDetails loginveinDetails, int userId) {
 
-                          byte passwordBytes[]= new byte[size];
-                   
-                          while((is.read(passwordBytes, 0, size))!=-1){
-                              bos.write(passwordBytes, 0, size);
-                          }
-                          byte dbBytearray[] = bos.toByteArray();
-                           return temp.temp=Arrays.equals(dbBytearray,imageBytes);
-                     }
-             }catch(IOException y){
-                 y.printStackTrace();
-             }
-             catch(Exception t){
-                 t.printStackTrace();
-             }
-          }
-                 
-              return temp.temp=false;
-            
-            }
-        });
-        return temp.temp;
+         String queryDbPasword = "select * from handsvein where pk="+userId;
+       HandsVeinDetails handsVeinDetailsfromDb  =(HandsVeinDetails)jdbcTemplate.queryForObject(queryDbPasword, new Object[]{userId}, new BeanPropertyRowMapper(HandsVeinDetails.class));
+     return true;   
+  //              String queryDbPasword = "select password from handsvein where pk="+userId;
+//       
+//         final Temp temp = new Temp();
+//        jdbcTemplate.query(queryDbPasword, new ResultSetExtractor<Boolean>() {
+//         @Override
+//            public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
+//             if(rs.next()){
+//               //  InputStream is  = rs.getBinaryStream("password");
+//                 byte imageBytesfromDb[] =  rs.getBytes("password");
+//                 
+//             try{
+//                 //  int size=is.available();
+//                        ImagePHash p= new ImagePHash();
+//                        String strimagedb = p.getHash(new ByteArrayInputStream(imageBytesfromDb));
+//                        String strimagetaken=p.getHash(new ByteArrayInputStream(imageBytes));
+//                        Hamming hamming = new Hamming(strimagedb, strimagetaken);
+//                        int hammingDistance  = hamming.getHammingDistance();
+//                           System.out.println("hammimg distance "+hammingDistance);
+//                           if(hammingDistance<5){
+//                              temp.temp=true;
+//                          }
+//                          else{
+//                              temp.temp=false;
+//                          }
+//                           System.out.println("Hamming Distance"+hammingDistance);
+//                           
+//                           
+//                           
+////                          ByteArrayOutputStream bos = new ByteArrayOutputStream();
+////
+////                          byte passwordBytes[]= new byte[size];
+////                   
+////                          while((is.read(passwordBytes, 0, size))!=-1){
+////                              bos.write(passwordBytes, 0, size);
+////                          }
+////                          byte dbBytearray[] = bos.toByteArray();
+////                          
+////                          ImagePHash p= new ImagePHash();
+////                          int hammingdistance = p.ImagePHash(dbBytearray,imageBytes);
+////                          if(hammingdistance<5){
+////                              temp.temp=true;
+////                          }
+////                          else{
+////                              temp.temp=false;
+////                          }
+////                          boolean temp1=false;
+////                          temp1=Arrays.equals(dbBytearray,imageBytes);
+////                          System.out.println("tEmp value"+temp1);
+//                    
+//             }catch(IOException y){
+//                 y.printStackTrace();
+//                 temp.temp=false;
+//             }
+//             catch(Exception t){
+//                 t.printStackTrace();
+//                 temp.temp=false;
+//             }
+//          }
+//            return temp.temp;
+//          }
+//        });
+//        return temp.temp;
     }
     
      

@@ -10,13 +10,10 @@
  */
 package handsveindetection;
 
+import handsveindetection.buisness.ImageProcessing;
+import handsveindetection.buisness.VeinDetails;
 import handsveindetection.db.HandsVeinDBInstantiate;
 import handsveindetection.db.HandsVeinDao;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -29,7 +26,6 @@ public class HansVeinLogin extends javax.swing.JPanel {
     /** Creates new form HansVeinLogin */
     public HansVeinLogin() {
         initComponents();
-        System.out.println("code added in cons in codepull  branch");
     }
 //code im master branch
     /** This method is called from within the constructor to
@@ -123,28 +119,33 @@ private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                 String pk=userId.substring(findcharIndex+1, length);
                 int pkValue=0;
                 try{
-                pkValue= Integer.parseInt(pk);  
+                   pkValue= Integer.parseInt(pk);  
                 }catch(NumberFormatException e){
-                   e.printStackTrace();
+                     e.printStackTrace();
+                  JOptionPane.showMessageDialog(this, "userId not valid");
                     break label;
                  }
                  HandsVeinDao handsVeinDao = HandsVeinDBInstantiate.getHandsVeinDao();
-                 if(handsVeinDao.checkUserId(pkValue)){
-                     ImageIcon icon=(ImageIcon) imageLabel.getIcon();
-                     Image image= icon.getImage();
-                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                     try{
-                       ImageIO.write(new BufferedImage(image.getWidth(null),image.getHeight(null),BufferedImage.TYPE_BYTE_GRAY), "jpg", baos);  
-                     }catch(Exception t){
-                         t.printStackTrace(); 
-                     }
+                 if(handsVeinDao.checkUserId(pkValue,userId)){
+                      ImageProcessing imageProcessing= new ImageProcessing();
+                      VeinDetails loginveinDetails =imageProcessing.getVeinDetails();
+                      System.out.println("No of Vein"+loginveinDetails.getNoOfVein());
+                      System.out.println("No of cross point"+loginveinDetails.getNoOfIntersectionPointInVein());
+//                    ImageIcon icon=(ImageIcon) imageLabel.getIcon();
+//                     Image image= icon.getImage();
+//                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                     try{
+//                       ImageIO.write(new BufferedImage(image.getWidth(null),image.getHeight(null),BufferedImage.TYPE_BYTE_GRAY), "jpg", baos);  
+//                     }catch(Exception t){
+//                         t.printStackTrace(); 
+//                     }
 
-                    if(handsVeinDao.checkPassword(baos.toByteArray(), pkValue)){
-                           JOptionPane.showMessageDialog(this, "Login Sucessfull");
-                       }
-                    else{
-                        JOptionPane.showMessageDialog(this, "You are not authorized User");
-                    }
+//                    if(handsVeinDao.checkPassword(baos.toByteArray(), pkValue)){
+//                        JOptionPane.showMessageDialog(this, "Login Sucessfull");
+//                       }
+//                    else{
+//                        JOptionPane.showMessageDialog(this, "You are not authorized User");
+//                    }
                  } 
                  else{
                     JOptionPane.showMessageDialog(this, "User Id Does Not Exist Please Registared");  

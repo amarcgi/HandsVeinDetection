@@ -9,24 +9,25 @@
  * Created on Oct 24, 2012, 9:58:05 AM
  */
 package handsveindetection;
-
+import handsveindetection.buisness.CannyEdgeDetector;
+import handsveindetection.buisness.ConvertJPGToBMP;
+import handsveindetection.buisness.FileMonitor;
+import handsveindetection.buisness.HistogramEQ;
+import handsveindetection.buisness.HoughTransform;
+import handsveindetection.buisness.ImageProcessing;
+import handsveindetection.buisness.VeinDetails;
 import handsveindetection.db.HandsVeinDBInstantiate;
 import handsveindetection.db.HandsVeinDao;
 import handsveindetection.db.HandsVeinDetails;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
+import java.util.Properties;
 /**
  *
  * @author Amar
  */
-public class HandsVeinRegistration extends javax.swing.JPanel {
+public class HandsVeinRegistration extends javax.swing.JPanel{
 //
   
     //"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
@@ -207,28 +208,49 @@ private void regSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
           handsVeinDetails.setContactNumber(regcontactNumberText.getText().trim());
           handsVeinDetails.setEmail(regemaillText.getText().trim());
           handsVeinDetails.setAddress(regaddressText.getText().trim());
-          ImageIcon icon=(ImageIcon) regimageLabel.getIcon();
-          Image image= icon.getImage();
-          ByteArrayOutputStream byteArrayOutputStream=null;
-          try{
-                byteArrayOutputStream= new ByteArrayOutputStream();
-                ImageIO.write(new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_BYTE_GRAY), "jpg", byteArrayOutputStream);
-                byte imagebyte[] = byteArrayOutputStream.toByteArray();
-                handsVeinDetails.setPassword(imagebyte);
-               // System.out.println(new String(imagebyte));
-
-          }catch(Throwable t){
-              t.printStackTrace();
-          }finally{
-              try{
-                   byteArrayOutputStream.close();
-              }catch(Throwable e){
-                  e.printStackTrace();;
-              }
-
-          }
-          String dbGeneratedUserId = handsVeinDao.generateId(handsVeinDetails);
-          JOptionPane.showMessageDialog(this, "your user Id "+dbGeneratedUserId);
+          ImageProcessing imageProcessing= new ImageProcessing();
+          VeinDetails veinDetails =imageProcessing.getVeinDetails();
+          handsVeinDetails.setNoofvein(veinDetails.getNoOfVein());
+          handsVeinDetails.setNoofcrosspoint(veinDetails.getNoOfIntersectionPointInVein());
+          System.out.println("No of Vein"+veinDetails.getNoOfVein());
+          System.out.println("No of cross point"+veinDetails.getNoOfIntersectionPointInVein());
+//          FileMonitor fileMonitor= new FileMonitor();
+//          Properties properties  = fileMonitor.getResourceLocation();
+//          ConvertJPGToBMP cjpgtbmp= new ConvertJPGToBMP();
+//          cjpgtbmp.convertJpegToBMP(properties.getProperty("filename"),properties.getProperty("directory"));        
+//          HistogramEQ histogramEQ = new HistogramEQ();
+//          histogramEQ.grayscaleHistogramm(properties.getProperty("bmpfilename"),properties.getProperty("directory"));
+//          CannyEdgeDetector cannyEdgeDetector = new CannyEdgeDetector();
+//          cannyEdgeDetector.convertToCannyEdgeDetector(properties.getProperty("histogramimage"),properties.getProperty("directory"));
+//          HoughTransform houghTransform = new HoughTransform();
+//          VeinDetails veinDetails = houghTransform.getVeinDetails(properties.getProperty("canyedgeimage"),properties.getProperty("directory"));
+//          System.out.println("No of Vein"+veinDetails.getNoOfVein());
+//          System.out.println("No of cross point"+veinDetails.getNoOfIntersectionPointInVein());
+//          
+          
+          //          
+//          ImageIcon icon=(ImageIcon) regimageLabel.getIcon();
+//          Image image= icon.getImage();
+//          ByteArrayOutputStream byteArrayOutputStream=null;
+//          try{
+//                byteArrayOutputStream= new ByteArrayOutputStream();
+//                ImageIO.write(new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_BYTE_GRAY), "jpg", byteArrayOutputStream);
+//                byte imagebyte[] = byteArrayOutputStream.toByteArray();
+//                handsVeinDetails.setPassword(imagebyte);
+//              
+//
+//          }catch(Throwable t){
+//              t.printStackTrace();
+//          }finally{
+//              try{
+//                   byteArrayOutputStream.close();
+//              }catch(Throwable e){
+//                  e.printStackTrace();;
+//              }
+//
+//          }
+//          String dbGeneratedUserId = handsVeinDao.generateId(handsVeinDetails);
+//          JOptionPane.showMessageDialog(this, "your user Id "+dbGeneratedUserId);
     }
 }//GEN-LAST:event_regSubmitButtonActionPerformed
  public JLabel getpasswordLabel(){
