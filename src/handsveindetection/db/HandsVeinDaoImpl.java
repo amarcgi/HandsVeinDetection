@@ -14,6 +14,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.lob.LobCreator;
@@ -121,9 +122,36 @@ public class HandsVeinDaoImpl implements HandsVeinDao{
     @Override
     public boolean checkPassword(VeinDetails loginveinDetails, int userId) {
 
-         String queryDbPasword = "select * from handsvein where pk="+userId;
-       HandsVeinDetails handsVeinDetailsfromDb  =(HandsVeinDetails)jdbcTemplate.queryForObject(queryDbPasword, new Object[]{userId}, new BeanPropertyRowMapper(HandsVeinDetails.class));
-     return true;   
+         String queryDbPasword = "select * from handsvein where pk = ?";
+       //   String queryDbPasword = "select * from handsvein";
+       HandsVeinDetails handsVeinDetailsfromDb  =(HandsVeinDetails)jdbcTemplate.queryForObject(queryDbPasword, new Object[]{userId},new RowMapper<HandsVeinDetails>() {
+          @Override
+            public HandsVeinDetails mapRow(ResultSet rs, int i) throws SQLException {
+                 HandsVeinDetails handsVeinDetailsfromDb= new HandsVeinDetails();
+                 if(rs!=null ){
+                     handsVeinDetailsfromDb.setPk(rs.getInt("pk"));
+                     handsVeinDetailsfromDb.setAddress(rs.getString("address"));
+                     handsVeinDetailsfromDb.setContactNumber(rs.getString("contactNumber"));
+                     handsVeinDetailsfromDb.setDate(rs.getDate("registrationDate"));
+                     handsVeinDetailsfromDb.setEmail(rs.getString("email"));
+                     handsVeinDetailsfromDb.setNoofcrosspoint(rs.getLong("noofcrosspoint"));
+                     handsVeinDetailsfromDb.setNoofvein(rs.getLong("noofvein"));
+                     handsVeinDetailsfromDb.setPassword(rs.getBytes("password"));
+                     handsVeinDetailsfromDb.setUserGeneratedId(rs.getString("userGeneratedId"));
+                     handsVeinDetailsfromDb.setUserName(rs.getString("userName"));
+                 }
+              return handsVeinDetailsfromDb;
+            }
+        });
+  
+       
+       if(loginveinDetails.getNoOfVein()==handsVeinDetailsfromDb.getNoofvein()
+          && loginveinDetails.getNoOfIntersectionPointInVein()==handsVeinDetailsfromDb.getNoofcrosspoint()){
+            return true;   
+       }
+       return false;
+       
+      
   //              String queryDbPasword = "select password from handsvein where pk="+userId;
 //       
 //         final Temp temp = new Temp();

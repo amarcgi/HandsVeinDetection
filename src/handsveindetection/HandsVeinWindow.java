@@ -14,6 +14,9 @@ import handsveindetection.buisness.FileMonitor;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowListener;
 import java.io.FileInputStream;
 import java.net.URL;
 import java.util.Properties;
@@ -21,27 +24,29 @@ import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
-
+import javax.swing.JOptionPane;
 /**
  *
  * @author Amar
  */
 public class HandsVeinWindow extends javax.swing.JFrame {
-     final Properties properties = new Properties();
+    
+    /** Creates new form HandsVeinWindow */
+     Properties properties ;
     /** Creates new form HandsVeinWindow */
     public HandsVeinWindow() {
-      // initComponents();
        initComponents1();
-      URL url=getClass().getClassLoader().getResource("handsveindetection/resources/handsvein.properties");
-       
+     // URL url=getClass().getClassLoader().getResource("handsveindetection/resources/handsvein.properties");
+    
       try{
-              properties.load(new FileInputStream(url.getPath()));
-              logframe.addInternalFrameListener(new InternalFrameListener() {
+    	  FileMonitor fileMonitor= new FileMonitor();
+    	  properties = fileMonitor.getResourceLocation();
+    	      logframe.addInternalFrameListener(new InternalFrameListener() {
 
                 @Override
                 public void internalFrameOpened(InternalFrameEvent e) {
-                   loginButton.setEnabled(false);
-                   registrationButton.setEnabled(false);
+                //   loginButton.setEnabled(false);
+                 //  registrationButton.setEnabled(false);
                 }
 
                 @Override
@@ -78,8 +83,8 @@ public class HandsVeinWindow extends javax.swing.JFrame {
 
                 @Override
                 public void internalFrameOpened(InternalFrameEvent e) {
-                   registrationButton.setEnabled(false);
-                    loginButton.setEnabled(false);
+                //   registrationButton.setEnabled(false);
+                 //  loginButton.setEnabled(false);
                 }
 
                 @Override
@@ -112,11 +117,10 @@ public class HandsVeinWindow extends javax.swing.JFrame {
                 public void internalFrameDeactivated(InternalFrameEvent e) {
                 }
             });
-              
+//              
          }catch(Exception t){
             t.printStackTrace();
         }
-        
     }
 
     /** This method is called from within the constructor to
@@ -196,7 +200,6 @@ public class HandsVeinWindow extends javax.swing.JFrame {
         setBounds(0, 0, 616, 568);
     }// </editor-fold>//GEN-END:initComponents
 
-    
     private void initComponents1() {
        jPanel1 = new javax.swing.JPanel();
         loginButton = new javax.swing.JButton();
@@ -222,6 +225,7 @@ public class HandsVeinWindow extends javax.swing.JFrame {
 
         loginButton.setText("Login");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);
             }
@@ -229,6 +233,7 @@ public class HandsVeinWindow extends javax.swing.JFrame {
 
         registrationButton.setText("Registration");
         registrationButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registrationButtonActionPerformed(evt);
             }
@@ -305,7 +310,7 @@ private void registrationButtonActionPerformed(java.awt.event.ActionEvent evt) {
     JInternalFrame regframe = new JInternalFrame( "HandsveinRegistration Form", true, true, true, true );
     HandsVeinRegistration handsVeinRegistration = new HandsVeinRegistration();
     HansVeinLogin hansVeinLogin   = new HansVeinLogin();
-    boolean isInternalFramIndeskTopPanel;
+   // boolean isInternalFramIndeskTopPanel;
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane deskTopPane;

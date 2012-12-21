@@ -163,7 +163,7 @@ public class HandsVeinRegistration extends javax.swing.JPanel{
                                 .addComponent(regnameText, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                                 .addComponent(regcontactNumberText))
                             .addComponent(regSubmitButton))))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +195,7 @@ public class HandsVeinRegistration extends javax.swing.JPanel{
                     .addComponent(regimageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(regSubmitButton)
-                .addGap(20, 20, 20))
+                .addGap(25, 25, 25))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -249,8 +249,8 @@ private void regSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
 //              }
 //
 //          }
-//          String dbGeneratedUserId = handsVeinDao.generateId(handsVeinDetails);
-//          JOptionPane.showMessageDialog(this, "your user Id "+dbGeneratedUserId);
+          String dbGeneratedUserId = handsVeinDao.generateId(handsVeinDetails);
+          JOptionPane.showMessageDialog(this, "your user Id "+dbGeneratedUserId);
     }
 }//GEN-LAST:event_regSubmitButtonActionPerformed
  public JLabel getpasswordLabel(){

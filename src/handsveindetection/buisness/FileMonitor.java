@@ -20,51 +20,58 @@ import java.io.FilenameFilter;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-public class FileMonitor
-{
-    Properties properties = new Properties();
-     URL url=getClass().getClassLoader().getResource("handsveindetection/resources/handsvein.properties");
-     String path=url.getPath();
-    static Timer timer;
+public class FileMonitor 
+{ 
+   Properties properties = new Properties();
+   URL url=getClass().getClassLoader().getResource("handsveindetection/resources/handsvein.properties");
+   String path=url.getPath();
+   static  Timer timer;
    public static void  startFileMonitor(final String dir,final String filext,final JLabel password){
- 	 timer= new Timer();
+       timer= new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-                                final String imagePath=dir;
+                              final String imagePath=dir;
 				File file= new File(dir);
                                 file.listFiles(new FilenameFilter() {
 					@Override
 					public boolean accept(File dir, String name) {
-							String fileNameList[] = dir.list();
+                                            System.out.println("Accept ");
+                                            String fileNameList[] = dir.list();
 							if(fileNameList !=null && fileNameList.length>0){
 								for(String fileName:fileNameList){
+                                                                        System.out.println("File Name "+fileName);
 									if(fileName.endsWith(filext)){
-                                                                       //  Crop crop= new Crop();
+                                                                            FileMonitor fileMonitor= new FileMonitor();
+                                                                            //  Crop crop= new Crop();
                                                                        //  password.setIcon(new ImageIcon(crop.Crop(new ImageIcon(imagePath+"002.jpg"))));
-                                                                             password.setIcon(new ImageIcon(imagePath+"002.jpg"));
+                                                                            password.setIcon(new ImageIcon(imagePath+ fileMonitor.getResourceLocation().getProperty("filename")));
                                                                             System.out.println("Image file found");
 									    stopFileMonitor();
-                                                                            return true;
+                                                                            break; 
+                                                                           // return true;
 									}
-								}
-							}
+                                                                    }
+                                			}
                                                 return true;
-					}
+                                        }
 				});
-			}
+                	}
 		},2000,2000);
+               
+       
     }
-   
+
    
     public static void  stopFileMonitor(){
+        System.out.println("shut down Timer");
         timer.cancel();
     }
     
-    public  Properties getResourceLocation(){
+   public  Properties getResourceLocation(){
        try{
-              properties.load(new FileInputStream(url.getPath()));
+    	   properties.load(FileMonitor.class.getClassLoader().getResourceAsStream("handsveindetection/resources/handsvein.properties"));  
+    	 //  properties.load(new FileInputStream(url.getPath()));
               return properties;
        }catch(Exception t){
            t.printStackTrace();;
@@ -72,7 +79,7 @@ public class FileMonitor
        }
        
     }
-    
+
 }
 
  
