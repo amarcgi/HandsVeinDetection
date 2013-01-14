@@ -36,8 +36,6 @@ public class HandsVeinWindow extends javax.swing.JFrame {
     /** Creates new form HandsVeinWindow */
     public HandsVeinWindow() {
        initComponents1();
-     // URL url=getClass().getClassLoader().getResource("handsveindetection/resources/handsvein.properties");
-    
       try{
     	  FileMonitor fileMonitor= new FileMonitor();
     	  properties = fileMonitor.getResourceLocation();
@@ -157,7 +155,7 @@ public class HandsVeinWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14));
         jLabel1.setForeground(new java.awt.Color(0, 51, 255));
         jLabel1.setText("HandsVein Detection");
 
@@ -167,9 +165,9 @@ public class HandsVeinWindow extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(loginButton)
-                .addGap(135, 135, 135)
+                .addGap(269, 269, 269)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 352, Short.MAX_VALUE)
                 .addComponent(registrationButton))
         );
         jPanel1Layout.setVerticalGroup(
@@ -177,8 +175,8 @@ public class HandsVeinWindow extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginButton)
-                    .addComponent(registrationButton)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(registrationButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -186,18 +184,19 @@ public class HandsVeinWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-            .addComponent(deskTopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 913, Short.MAX_VALUE)
+            .addComponent(deskTopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 913, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deskTopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE))
+                .addComponent(deskTopPane, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        setBounds(0, 0, 616, 568);
+        setBounds(0, 0, 929, 562);
     }// </editor-fold>//GEN-END:initComponents
 
     private void initComponents1() {
@@ -205,7 +204,7 @@ public class HandsVeinWindow extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
         registrationButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-         deskTopPane = new javax.swing.JDesktopPane(){
+        deskTopPane = new javax.swing.JDesktopPane(){
              ImageIcon backImage = new ImageIcon(getClass().getClassLoader().getResource("handsveindetection/resources/handsvein.png"));
              Image image = backImage.getImage();
              {setOpaque(false);}
@@ -225,7 +224,6 @@ public class HandsVeinWindow extends javax.swing.JFrame {
 
         loginButton.setText("Login");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
-            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);
             }
@@ -233,13 +231,12 @@ public class HandsVeinWindow extends javax.swing.JFrame {
 
         registrationButton.setText("Registration");
         registrationButton.addActionListener(new java.awt.event.ActionListener() {
-            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registrationButtonActionPerformed(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14));
         jLabel1.setForeground(new java.awt.Color(0, 51, 255));
         jLabel1.setText("HandsVein Detection");
 
@@ -249,9 +246,9 @@ public class HandsVeinWindow extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(loginButton)
-                .addGap(135, 135, 135)
+                .addGap(269, 269, 269)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 352, Short.MAX_VALUE)
                 .addComponent(registrationButton))
         );
         jPanel1Layout.setVerticalGroup(
@@ -259,8 +256,8 @@ public class HandsVeinWindow extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginButton)
-                    .addComponent(registrationButton)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(registrationButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -268,18 +265,19 @@ public class HandsVeinWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-            .addComponent(deskTopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 913, Short.MAX_VALUE)
+            .addComponent(deskTopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 913, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deskTopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE))
+                .addComponent(deskTopPane, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        setBounds(0, 0, 616, 568);
+        setBounds(0, 0, 929, 562);
     }// </editor-fold>
     
     
@@ -291,7 +289,7 @@ private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
  deskTopPane.removeAll();
  deskTopPane.add(logframe); 
  registrationButton.setEnabled(false);
- FileMonitor.startFileMonitor(properties.getProperty("directory"), properties.getProperty("fileextension"),hansVeinLogin.getpasswordLabel());
+ FileMonitor.startFileMonitor(properties.getProperty("directory"), properties.getProperty("fileextension"),hansVeinLogin.getpasswordLabel(),null,null,null,null);
 
 }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -303,7 +301,7 @@ private void registrationButtonActionPerformed(java.awt.event.ActionEvent evt) {
  deskTopPane.removeAll();
  deskTopPane.add(regframe); 
  loginButton.setEnabled(false);
- FileMonitor.startFileMonitor(properties.getProperty("directory"), properties.getProperty("fileextension"),handsVeinRegistration.getpasswordLabel());
+ FileMonitor.startFileMonitor(properties.getProperty("directory"), properties.getProperty("fileextension"),handsVeinRegistration.getpasswordLabel(),handsVeinRegistration.getGrayscaleImagelabel(),handsVeinRegistration.getHistogramImagelabel(),handsVeinRegistration.getiRImageLabel(),handsVeinRegistration.getSegementedImageLabel());
 }//GEN-LAST:event_registrationButtonActionPerformed
    
     JInternalFrame logframe = new JInternalFrame("HandsVeinLogin Form", true, true, true, true );

@@ -1,0 +1,3 @@
+handsveindetection.db.Temp
+handsveindetection.db.HandsVeinDaoImpl
+handsveindetection.db.AbstractLobPreparedStatementCreator

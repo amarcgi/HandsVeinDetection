@@ -25,10 +25,10 @@ public class FileMonitor
    Properties properties = new Properties();
    URL url=getClass().getClassLoader().getResource("handsveindetection/resources/handsvein.properties");
    String path=url.getPath();
-   static  Timer timer;
-   public static void  startFileMonitor(final String dir,final String filext,final JLabel password){
-       timer= new Timer();
-		timer.schedule(new TimerTask() {
+   static  Timer timer=null;
+   public static void  startFileMonitor(final String dir,final String filext,final JLabel password,final JLabel grayscaleImagelabel,final JLabel histogramImagelabel,final JLabel iRImageLabel,final JLabel segementedImageLabel) {
+    	 timer = new Timer();;
+       timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
                               final String imagePath=dir;
@@ -42,14 +42,20 @@ public class FileMonitor
 								for(String fileName:fileNameList){
                                                                         System.out.println("File Name "+fileName);
 									if(fileName.endsWith(filext)){
-                                                                            FileMonitor fileMonitor= new FileMonitor();
+                                                                           // FileMonitor fileMonitor= new FileMonitor();
                                                                             //  Crop crop= new Crop();
                                                                        //  password.setIcon(new ImageIcon(crop.Crop(new ImageIcon(imagePath+"002.jpg"))));
-                                                                            password.setIcon(new ImageIcon(imagePath+ fileMonitor.getResourceLocation().getProperty("filename")));
+                                                                        //    password.setIcon(new ImageIcon(crop.Crop(new ImageIcon(imagePath+ fileMonitor.getResourceLocation().getProperty("filename")))));
+                                                                          //  password.setIcon(new ImageIcon(imagePath+ fileMonitor.getResourceLocation().getProperty("filename")));
                                                                             System.out.println("Image file found");
-									    stopFileMonitor();
-                                                                            break; 
-                                                                           // return true;
+									  ImageProcessing imageProcessing= new ImageProcessing();
+                                                                          imageProcessing.setImageInIrGrayHistoSegmentedpasswordJlabel(imagePath, password, grayscaleImagelabel, histogramImagelabel, iRImageLabel, segementedImageLabel);
+                                                                           timer.cancel(); 
+                                                                           timer.purge();
+                                                                           
+                                                                          stopFileMonitor();
+                                                                         //   break; 
+                                                                            return true;
 									}
                                                                     }
                                 			}
@@ -66,6 +72,7 @@ public class FileMonitor
     public static void  stopFileMonitor(){
         System.out.println("shut down Timer");
         timer.cancel();
+        timer.purge();
     }
     
    public  Properties getResourceLocation(){
@@ -93,7 +100,7 @@ class Crop extends JFrame {
   //  ImageIcon icon = new ImageIcon(imageLocation);
     image = icon.getImage();
     image = createImage(new FilteredImageSource(image.getSource(),
-        new CropImageFilter(0, 0, 230, 205)));
+        new CropImageFilter(0, 0, 240, 150)));
     return image;
   }
 

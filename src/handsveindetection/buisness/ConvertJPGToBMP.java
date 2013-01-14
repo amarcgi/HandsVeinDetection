@@ -16,18 +16,18 @@ public class ConvertJPGToBMP
 	  File output = new File(dir+properties.getProperty("bmpfilename"));
 	  ImageIO.write(image, "bmp", output);
 	  System.out.println("Your image has been converted successfully");
-  }catch(FileNotFoundException e){
-  System.out.println("Error:"+e.getMessage());
-   return false;
-  }catch(IOException e)
-  {
-    System.out.println("Error:"+e.getMessage());
-     return false;
-  }
-  catch(Exception e){
-    System.out.println(e.getMessage());
-    return false;
-  }
+          }catch(FileNotFoundException e){
+          System.out.println("Error:"+e.getMessage());
+           return false;
+          }catch(IOException e)
+          {
+            System.out.println("Error:"+e.getMessage());
+             return false;
+          }
+          catch(Exception e){
+            System.out.println(e.getMessage());
+            return false;
+          }
         return true;
 }
 }

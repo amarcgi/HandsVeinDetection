@@ -126,9 +126,11 @@ private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     break label;
                  }
                  HandsVeinDao handsVeinDao = HandsVeinDBInstantiate.getHandsVeinDao();
-                 if(handsVeinDao.checkUserId(pkValue,userId)){
-                      ImageProcessing imageProcessing= new ImageProcessing();
+                 ImageProcessing imageProcessing= new ImageProcessing();
                       VeinDetails loginveinDetails =imageProcessing.getVeinDetails();
+                 if(handsVeinDao.checkUserId(pkValue,userId)){
+                    //  ImageProcessing imageProcessing= new ImageProcessing();
+                     // VeinDetails loginveinDetails =imageProcessing.getVeinDetails();
                       System.out.println("No of Vein"+loginveinDetails.getNoOfVein());
                       System.out.println("No of cross point"+loginveinDetails.getNoOfIntersectionPointInVein());
 

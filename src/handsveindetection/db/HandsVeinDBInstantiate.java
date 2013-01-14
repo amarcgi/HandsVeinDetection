@@ -15,7 +15,7 @@ import org.springframework.core.io.FileSystemResource;
  */
 public class HandsVeinDBInstantiate {
     static HandsVeinDao handsVeinDao=null;
-   static String url =  "C:\\Users\\Amar\\Documents\\NetBeansProjects\\HandsVeinDetection\\src\\handsveindetection\\resources\\handsveinbean.xml";
+   static String url =  "C:\\Users\\Amar\\Documents\\NetBeansProjects\\temp\\HandsVeinDetection\\src\\handsveindetection\\resources\\handsveinbean.xml";
    
    public static  HandsVeinDao getHandsVeinDao(){
         if(handsVeinDao==null){

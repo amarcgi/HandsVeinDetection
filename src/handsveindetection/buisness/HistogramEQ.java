@@ -11,7 +11,7 @@ public class HistogramEQ {
  
     private static BufferedImage original, equalized;
  
-    public boolean grayscaleHistogramm(String file,String dir){
+    public boolean convertHistogramm(String file,String dir){
     try{
         FileMonitor fileMonitor= new FileMonitor();
         Properties properties  = fileMonitor.getResourceLocation();
@@ -41,7 +41,6 @@ public class HistogramEQ {
     private static void writeImage(String output) throws IOException {
         File file = new File(output);
         ImageIO.write(equalized, "bmp", file);
-        
     }
  
     private static BufferedImage histogramEqualization(BufferedImage original) {

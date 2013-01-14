@@ -38,8 +38,7 @@ import javax.imageio.ImageIO;
 
 public class CannyEdgeDetector {
 
-	
-    public boolean convertToCannyEdgeDetector(String file,String dir){
+public boolean convertToCannyEdgeDetector(String file,String dir){
         try{
                  // CannyEdgeDetector detector = new CannyEdgeDetector();
 		  //adjust its parameters as desired

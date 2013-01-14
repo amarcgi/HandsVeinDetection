@@ -7,41 +7,47 @@ import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
- 
+ import java.util.Properties;
  
 public class Grayscale {
  
     private static BufferedImage original, grayscale;
  
-    public static void main(String[] args) throws IOException {
- 
-        File original_f = new File("C:\\Documents and Settings\\amarnath.poddar\\My Documents\\Downloads\\color.jpg");
-        String output_f = "grayimage";
+    public static void convertGrayImage(String file,String dir,FileMonitor fileMonitor) throws IOException {
+       // FileMonitor fileMonitor= new FileMonitor();
+        File original_f = new File(dir+file);
         original = ImageIO.read(original_f);
+        Properties properties  = fileMonitor.getResourceLocation();
+        String output_f = dir+properties.getProperty("grayscalimage");
         grayscale = avg(original);
-        writeImage(output_f+"_1_avg");
-        grayscale = luminosity(original);
-        writeImage(output_f+"_2_lum");
-        grayscale = desaturation(original);
-        writeImage(output_f+"_3_lig");
-        grayscale = decompMin(original);
-        writeImage(output_f+"_4_decmin");
-        grayscale = decompMax(original);
-        writeImage(output_f+"_5_decmax");
-        grayscale = rgb(original, 0);
-        writeImage(output_f+"_6_1r");
-        grayscale = rgb(original, 1);
-        writeImage(output_f+"_6_2g");
-        grayscale = rgb(original, 2);
-        writeImage(output_f+"_6_3b");
-        grayscale = javaWay(original);
-        writeImage(output_f+"_7_java");
+        writeImage(output_f);
+//        grayscale = luminosity(original);
+//        writeImage(output_f+"_2_lum");
+//        grayscale = desaturation(original);
+//        writeImage(output_f+"_3_lig");
+//        grayscale = decompMin(original);
+//        writeImage(output_f+"_4_decmin");
+//        grayscale = decompMax(original);
+//        writeImage(output_f+"_5_decmax");
+//        grayscale = rgb(original, 0);
+//        writeImage(output_f+"_6_1r");
+//        grayscale = rgb(original, 1);
+//        writeImage(output_f+"_6_2g");
+//        grayscale = rgb(original, 2);
+//        writeImage(output_f+"_6_3b");
+//        grayscale = javaWay(original);
+//        writeImage(output_f+"_7_java");
  
     }
+    
+    
+    
  
     private static void writeImage(String output) throws IOException {
-        File file = new File(output+".jpg");
-        ImageIO.write(grayscale, "jpg", file);
+       // File file = new File(output+".jpg");
+        //ImageIO.write(grayscale, "jpg", file);
+        File file = new File(output);
+        ImageIO.write(grayscale, "bmp", file);
     }
  
     // The average grayscale method
