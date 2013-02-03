@@ -306,8 +306,8 @@ private void registrationButtonActionPerformed(java.awt.event.ActionEvent evt) {
    
     JInternalFrame logframe = new JInternalFrame("HandsVeinLogin Form", true, true, true, true );
     JInternalFrame regframe = new JInternalFrame( "HandsveinRegistration Form", true, true, true, true );
-    HandsVeinRegistration handsVeinRegistration = new HandsVeinRegistration();
-    HansVeinLogin hansVeinLogin   = new HansVeinLogin();
+  public static   HandsVeinRegistration handsVeinRegistration = new HandsVeinRegistration();
+  public static  HansVeinLogin hansVeinLogin   = new HansVeinLogin();
    // boolean isInternalFramIndeskTopPanel;
    
     // Variables declaration - do not modify//GEN-BEGIN:variables

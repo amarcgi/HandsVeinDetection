@@ -50,7 +50,7 @@ public boolean convertToCannyEdgeDetector(String file,String dir){
 		  setSourceImage(ImageIO.read(new File(dir+file)));
 		  process();
 		  BufferedImage edges = getEdgesImage();
-		  ImageIO.write(edges, "png", new File(dir+properties.getProperty("canyedgeimage")));
+		  ImageIO.write(edges, "bmp", new File(dir+properties.getProperty("canyedgeimage")));
 		  System.out.println("Edge Created");
             return true;
         }catch(Exception t){
@@ -601,7 +601,7 @@ public boolean convertToCannyEdgeDetector(String file,String dir){
 		//in any other format other than an INT_ARGB type BufferedImage.
 		//This may be easily remedied by providing alternative accessors.
 		if (edgesImage == null) {
-			edgesImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			edgesImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		}
 		edgesImage.getWritableTile(0, 0).setDataElements(0, 0, width, height, pixels);
 	}

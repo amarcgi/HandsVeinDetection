@@ -17,6 +17,6 @@ public interface HandsVeinDao {
     public boolean delete(HandsVeinDetails handsVeinDetails);
     public Collection<HandsVeinDetails> getAllHandsVeinDetailsInDb();
     public boolean checkUserId(final int userId,String usergeneratedId);
-    public boolean checkPassword(final VeinDetails loginveinDetails,final int userId);
+    public boolean checkPassword(final VeinDetails loginveinDetails,final int userId, HandsVeinDetails handsVeinDetailsLogin);
    
 }

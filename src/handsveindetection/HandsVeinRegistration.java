@@ -9,11 +9,7 @@
  * Created on Oct 24, 2012, 9:58:05 AM
  */
 package handsveindetection;
-import handsveindetection.buisness.CannyEdgeDetector;
-import handsveindetection.buisness.ConvertJPGToBMP;
 import handsveindetection.buisness.FileMonitor;
-import handsveindetection.buisness.HistogramEQ;
-import handsveindetection.buisness.HoughTransform;
 import handsveindetection.buisness.ImageProcessing;
 import handsveindetection.buisness.VeinDetails;
 import handsveindetection.db.HandsVeinDBInstantiate;
@@ -22,7 +18,13 @@ import handsveindetection.db.HandsVeinDetails;
 import java.util.regex.Pattern;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import java.util.Properties;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 /**
  *
  * @author Amar
@@ -270,6 +272,9 @@ public class HandsVeinRegistration extends javax.swing.JPanel{
 private void regSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regSubmitButtonActionPerformed
 // TODO add your handling code here:
     if(valiDateInput()){
+        try{
+            FileMonitor fileMonitor= new FileMonitor();
+    	  java .util.Properties properties = fileMonitor.getResourceLocation();
           HandsVeinDao handsVeinDao = HandsVeinDBInstantiate.getHandsVeinDao();
           HandsVeinDetails handsVeinDetails= new HandsVeinDetails();
           handsVeinDetails.setUserName(regnameText.getText().trim());
@@ -280,6 +285,7 @@ private void regSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
           VeinDetails veinDetails =imageProcessing.getVeinDetails();
           handsVeinDetails.setNoofvein(veinDetails.getNoOfVein());
           handsVeinDetails.setNoofcrosspoint(veinDetails.getNoOfIntersectionPointInVein());
+          handsVeinDetails = imageProcessing.processImageForBifurcationEndPointetc(properties.getProperty("directory")+properties.getProperty("canyedgeimage"),handsVeinDetails);
           System.out.println("No of Vein"+veinDetails.getNoOfVein());
           System.out.println("No of cross point"+veinDetails.getNoOfIntersectionPointInVein());
 //          FileMonitor fileMonitor= new FileMonitor();
@@ -296,29 +302,43 @@ private void regSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
 //          System.out.println("No of cross point"+veinDetails.getNoOfIntersectionPointInVein());
 //          
           
-          //          
-//          ImageIcon icon=(ImageIcon) regimageLabel.getIcon();
-//          Image image= icon.getImage();
-//          ByteArrayOutputStream byteArrayOutputStream=null;
-//          try{
-//                byteArrayOutputStream= new ByteArrayOutputStream();
-//                ImageIO.write(new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_BYTE_GRAY), "jpg", byteArrayOutputStream);
-//                byte imagebyte[] = byteArrayOutputStream.toByteArray();
-//                handsVeinDetails.setPassword(imagebyte);
-//              
-//
-//          }catch(Throwable t){
-//              t.printStackTrace();
-//          }finally{
-//              try{
-//                   byteArrayOutputStream.close();
-//              }catch(Throwable e){
-//                  e.printStackTrace();;
-//              }
-//
-//          }
+                    
+          ImageIcon icon=(ImageIcon) regimageLabel.getIcon();
+          Image image= icon.getImage();
+          ByteArrayOutputStream byteArrayOutputStream=null;
+          try{
+                byteArrayOutputStream= new ByteArrayOutputStream();
+                ImageIO.write(new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_BYTE_GRAY), "bmp", byteArrayOutputStream);
+                byte imagebyte[] = byteArrayOutputStream.toByteArray();
+                handsVeinDetails.setPassword(imagebyte);
+              
+
+          }catch(Throwable t){
+              t.printStackTrace();
+          }finally{
+              try{
+                   byteArrayOutputStream.close();
+              }catch(Throwable e){
+                  e.printStackTrace();;
+              }
+
+          }
           String dbGeneratedUserId = handsVeinDao.generateId(handsVeinDetails);
           JOptionPane.showMessageDialog(this, "your user Id "+dbGeneratedUserId);
+         fileMonitor.fileDelete();
+         HandsVeinWindow.handsVeinRegistration.getiRImageLabel().setIcon(null);
+         HandsVeinWindow.handsVeinRegistration.getHistogramImagelabel().setIcon(null);
+         HandsVeinWindow.handsVeinRegistration.getGrayscaleImagelabel().setIcon(null);
+         HandsVeinWindow.handsVeinRegistration.getSegementedImageLabel().setIcon(null);
+         HandsVeinWindow.handsVeinRegistration.getRegimageLabel().setIcon(null);
+         HandsVeinWindow.handsVeinRegistration.getRegnameText().setText("");
+         HandsVeinWindow.handsVeinRegistration.getRegaddressText().setText("");
+         HandsVeinWindow.handsVeinRegistration.getRegcontactNumberText().setText("");
+         HandsVeinWindow.handsVeinRegistration. getRegemaillText().setText("");
+        }catch(Exception t){
+            t.printStackTrace();
+        }
+         
     }
 }//GEN-LAST:event_regSubmitButtonActionPerformed
   public JLabel getpasswordLabel(){
@@ -338,6 +358,25 @@ private void regSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     public JLabel getSegementedImageLabel() {
         return segementedImageLabel;
+    }
+    public JTextArea getRegaddressText() {
+        return regaddressText;
+    }
+
+    public JTextField getRegcontactNumberText() {
+        return regcontactNumberText;
+    }
+
+    public JTextField getRegemaillText() {
+        return regemaillText;
+    }
+
+    public JLabel getRegimageLabel() {
+        return regimageLabel;
+    }
+
+    public JTextField getRegnameText() {
+        return regnameText;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel grayscaleImagelabel;
@@ -363,6 +402,8 @@ private void regSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JTextField regnameText;
     private javax.swing.JLabel segementedImageLabel;
     // End of variables declaration//GEN-END:variables
+
+    
 
    
 }

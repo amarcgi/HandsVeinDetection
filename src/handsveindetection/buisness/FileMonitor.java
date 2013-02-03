@@ -64,8 +64,6 @@ public class FileMonitor
 				});
                 	}
 		},2000,2000);
-               
-       
     }
 
    
@@ -86,6 +84,19 @@ public class FileMonitor
        }
        
     }
+   
+   public void fileDelete(){
+        File file = new File(getResourceLocation().getProperty("directory"));        
+        String[] myFiles;      
+            if(file.isDirectory()){  
+                myFiles = file.list();  
+                for (int i=0; i<myFiles.length; i++) {  
+                    File myFile = new File(file, myFiles[i]);   
+                    myFile.delete();  
+                }  
+             } 
+   }
+   
 
 }
 
@@ -100,7 +111,7 @@ class Crop extends JFrame {
   //  ImageIcon icon = new ImageIcon(imageLocation);
     image = icon.getImage();
     image = createImage(new FilteredImageSource(image.getSource(),
-        new CropImageFilter(0, 0, 240, 150)));
+        new CropImageFilter(50, 20, 240, 150)));
     return image;
   }
 

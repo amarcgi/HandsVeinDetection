@@ -23,7 +23,19 @@ public class HandsVeinDetection {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-            HandsVeinWindow handsVeinWindow= new HandsVeinWindow();
+        
+        AmpleWelComeScreen ampleWelComeScreen= new AmpleWelComeScreen();
+        ampleWelComeScreen.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        ampleWelComeScreen.setVisible( true );
+        ampleWelComeScreen.setLocation(400, 250);
+        try{
+        Thread.currentThread().sleep(5000);
+        }catch(Exception t){
+            t.printStackTrace();;
+        }
+        ampleWelComeScreen.setVisible( false );
+        ampleWelComeScreen.dispose();
+        HandsVeinWindow handsVeinWindow= new HandsVeinWindow();
             handsVeinWindow.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
             handsVeinWindow.setVisible( true );
             

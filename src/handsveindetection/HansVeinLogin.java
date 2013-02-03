@@ -10,13 +10,19 @@
  */
 package handsveindetection;
 
+import handsveindetection.buisness.FileMonitor;
 import handsveindetection.buisness.ImageProcessing;
 import handsveindetection.buisness.VeinDetails;
 import handsveindetection.db.HandsVeinDBInstantiate;
 import handsveindetection.db.HandsVeinDao;
+import handsveindetection.db.HandsVeinDetails;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
+import javax.imageio.ImageIO;
+import java.util.Properties;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.ByteArrayOutputStream;
 /**
  *
  * @author Amar
@@ -105,8 +111,10 @@ public class HansVeinLogin extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitButtonActionPerformed
+    FileMonitor fileMonitor= new FileMonitor();
     label:{
     if(validateField()){
+         
                 String userId=userIdtext.getText();
                 int length = userId.length();
                 int findcharIndex=0;
@@ -126,22 +134,58 @@ private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     break label;
                  }
                  HandsVeinDao handsVeinDao = HandsVeinDBInstantiate.getHandsVeinDao();
-                 ImageProcessing imageProcessing= new ImageProcessing();
-                      VeinDetails loginveinDetails =imageProcessing.getVeinDetails();
+                 
+                 Properties properties= fileMonitor.getResourceLocation();
                  if(handsVeinDao.checkUserId(pkValue,userId)){
-                    //  ImageProcessing imageProcessing= new ImageProcessing();
-                     // VeinDetails loginveinDetails =imageProcessing.getVeinDetails();
+                      ImageProcessing imageProcessing= new ImageProcessing();
+                      VeinDetails loginveinDetails =imageProcessing.getVeinDetails();
                       System.out.println("No of Vein"+loginveinDetails.getNoOfVein());
                       System.out.println("No of cross point"+loginveinDetails.getNoOfIntersectionPointInVein());
+                      HandsVeinDetails handsVeinDetailsLogin= new HandsVeinDetails();
+                      String Imagandloc=properties.getProperty("directory")+properties.getProperty("canyedgeimage");
+                       try{
+                      handsVeinDetailsLogin = imageProcessing.processImageForBifurcationEndPointetc(Imagandloc,handsVeinDetailsLogin);
+                      BufferedImage bufferedImage =  ImageIO.read(new File(properties.getProperty("directory") + properties.getProperty("canyedgeimage")));
+                    // bufferedImage.ge
+                       ByteArrayOutputStream byteArrayOutputStream=null;
+                          try{
+                                byteArrayOutputStream= new ByteArrayOutputStream();
+                                ImageIO.write(bufferedImage, "bmp", byteArrayOutputStream);
+                                byte imagebyte[] = byteArrayOutputStream.toByteArray();
+                                handsVeinDetailsLogin.setPassword(imagebyte);
 
-                    if(handsVeinDao.checkPassword(loginveinDetails, pkValue)){
-                        JOptionPane.showMessageDialog(this, "Login Sucessfull");
+
+                          }catch(Throwable t){
+                              t.printStackTrace();
+                          }finally{
+                              try{
+                                   byteArrayOutputStream.close();
+                              }catch(Throwable e){
+                                  e.printStackTrace();;
+                              }
+                             }
+                       }catch(Exception t){
+                         t.printStackTrace(); 
+                     }
+                       
+                       if(handsVeinDao.checkPassword(loginveinDetails, pkValue,handsVeinDetailsLogin)){
+                        
+                           JOptionPane.showMessageDialog(this, "Login Sucessfull");
+                        String url = "https://netbanking.hdfcbank.com/netbanking/";
+                        if(java.awt.Desktop.isDesktopSupported()){
+                            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+                            try{
+                                desktop.browse(new java.net.URI(url)); 
+                            }catch(Exception t){
+                                t.printStackTrace();;
+                            }
+                        }
                        }
                      else{
                         JOptionPane.showMessageDialog(this, "You are not authorized User");
                        }
                       
-                      //                    ImageIcon icon=(ImageIcon) imageLabel.getIcon();
+                      //ImageIcon icon=(ImageIcon) imageLabel.getIcon();
 //                     Image image= icon.getImage();
 //                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 //                     try{
@@ -150,7 +194,7 @@ private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 //                         t.printStackTrace(); 
 //                     }
 
- //                   if(handsVeinDao.checkPassword(loginveinDetails, pkValue)){
+//                   if(handsVeinDao.checkPassword(loginveinDetails, pkValue)){
 //                        JOptionPane.showMessageDialog(this, "Login Sucessfull");
 //                       }
 //                    else{
@@ -162,13 +206,16 @@ private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                  }
           }
  }
+   
+    fileMonitor.fileDelete();
+    HandsVeinWindow.hansVeinLogin.imageLabel.setIcon(null);
+    HandsVeinWindow.hansVeinLogin.userIdtext.setText("");
 }//GEN-LAST:event_SubmitButtonActionPerformed
 
  public boolean validateField(){
         if(userIdtext.getText().trim().length()==0){
             JOptionPane.showMessageDialog(HansVeinLogin.this, "Plase Enetr Valid User ID");
             return false;
-        
         }
         if(imageLabel.getIcon()==null){
             JOptionPane.showMessageDialog(HansVeinLogin.this, "Plase Enetr Valid Password");
